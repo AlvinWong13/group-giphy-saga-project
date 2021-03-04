@@ -18,7 +18,7 @@ const GifsSearch = (state = [], action) => {
     default:
       return state;
   }
-};
+};//nonsense commment
 const GifsFavs = (state = [], action) => {
   switch (action.type) {
     case 'SET_FAVS':
