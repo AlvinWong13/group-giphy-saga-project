@@ -41,6 +41,8 @@ function FavoritesList() {
         <li>
           <img src="https://giphy.com/static/img/zoomies.gif" alt="Smiley Face" />
           <img src="https://media.giphy.com/media/HPvfnOuz1tOgg/giphy.gif" alt="Nick Cage" />
+
+          {/* favorite.map */}
           <select 
             name="categories" 
             onChange={(event) => setNewCategory(event.target.value)}

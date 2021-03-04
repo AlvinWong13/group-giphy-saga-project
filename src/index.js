@@ -10,7 +10,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 //categoryReducer
 const categoryReducer = (state = [], action) => {
-    if(action.type === 'SEND_CAT_TO_REDUCER') {
+    if(action.type === 'SEND_CATEGORY_TO_REDUCER') {
       return action.payload;
     }
     return state;
