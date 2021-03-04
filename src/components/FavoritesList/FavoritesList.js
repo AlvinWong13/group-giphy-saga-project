@@ -14,6 +14,7 @@ function FavoritesList() {
             <option>Meme</option>
           </select>
         </li>
+
       </ul>
     </>
   )

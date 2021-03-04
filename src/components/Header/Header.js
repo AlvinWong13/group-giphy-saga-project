@@ -123,7 +123,7 @@ function Header() {
                 <Paper>
                   <ClickAwayListener onClickAway={handleClose}>
                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                      <MenuItem onClick={handleClose}><Link to ='/search'>Search</Link></MenuItem>
+                      <MenuItem onClick={handleClose}><Link to ='/'>Search</Link></MenuItem>
                       <MenuItem onClick={handleClose}><Link to ='/favorites'>Favorites</Link></MenuItem>
                     </MenuList>
                   </ClickAwayListener>
