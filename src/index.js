@@ -12,6 +12,25 @@ import { takeEvery, put } from 'redux-saga/effects';
 const sagaMiddleware = createSagaMiddleware();
 
 // GET ROUTE REDUCER FOR GIF Search
+function* watcherSaga() {
+  console.log("yield takeEvery")
+  yield takeEvery('SEARCH_GIFS', searchGifs)
+} 
+
+function* searchGifs(action) {
+  console.log("fetch gifts", action);
+  try{
+    yield axios.get('/api/search', action.payload);
+    yield put({
+      type: 'SET_GIFS'
+    })
+  }
+  catch(err) {
+    console.log(err, "post failed")
+  }
+}
+
+
 const GifsSearch = (state = [], action) => {
   switch (action.type) {
     case 'SET_GIFS':
@@ -30,12 +49,11 @@ const GifsFavs = (state = [], action) => {
 };
 // Put that star function thing here to get gifs
 
-function* watcherSaga() {
-  console.log("yield takeEvery")
-} 
 
 const storeInstance = createStore(
   combineReducers({
+    GifsSearch,
+    GifsFavs
     // reducers here
   }),
 
@@ -43,5 +61,7 @@ const storeInstance = createStore(
 );
 
 sagaMiddleware.run(watcherSaga);
-ReactDOM.render(<Provider store={storeInstance}> <App /> </Provider> , document.getElementById('root'));
-// Provider brings store, done by Michael
+ReactDOM.render(<Provider store={storeInstance}>
+      <App />
+    </Provider>,
+     document.getElementById('root'));
