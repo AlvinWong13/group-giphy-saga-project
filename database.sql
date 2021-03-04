@@ -11,9 +11,9 @@ CREATE TABLE "category" (
 
 CREATE TABLE "favorite" (
 	"id" SERIAL PRIMARY KEY,
-	"url" VARCHAR (150) NOT NULL,
-	"title" VARCHAR (60) NOT NULL,
-	"category_id" INT
+	"url" VARCHAR (300) NOT NULL,
+	"title" VARCHAR (100) NOT NULL,
+	"category_id" INT REFERENCES "category"
 );
 
 -- Default categories. You may change them :)
