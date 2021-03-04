@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/App';
-import App from './components/App/App.jsx';
-import registerServiceWorker from './registerServiceWorker';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -30,6 +28,10 @@ const GifsFavs = (state = [], action) => {
   }
 };
 // Put that star function thing here to get gifs
+
+function* watcherSaga() {
+  console.log("yield takeEvery")
+} 
 
 const storeInstance = createStore(
   combineReducers({
