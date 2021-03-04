@@ -1,10 +1,36 @@
+import { HashRouter as Router, Route } from 'react-router-dom';
 import React from 'react';
+
+import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+
+import Header from '../Header/Header'
+import SearchForm from '../SearchForm/SearchForm';
+import FavoritesList from '../FavoritesList/FavoritesList';
+
+const outerTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#000000',
+    },
+    secondary: {
+      main: '#ff0000',
+    },
+  },
+});
 
 function App(props) {
   return (
-    <div>
-      <h1>Giphy Search!</h1>
-    </div>
+      <Router>
+        <ThemeProvider theme={outerTheme}>
+          <Header />
+          <Route path='/search' >
+            <SearchForm />
+          </Route>
+          <Route path='/favorites' >
+            <FavoritesList />
+          </Route>
+        </ThemeProvider>
+      </Router>
   );
 }
 
