@@ -8,6 +8,7 @@ import logger from 'redux-logger';
 import axios from 'axios';
 import { takeEvery, put } from 'redux-saga/effects';
 
+
 const sagaMiddleware = createSagaMiddleware();
 
 // GET ROUTE REDUCER FOR GIF Search
@@ -42,4 +43,5 @@ const storeInstance = createStore(
 );
 
 sagaMiddleware.run(watcherSaga);
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Provider store={storeInstance}> <App /> </Provider> , document.getElementById('root'));
+// Provider brings store, done by Michael
