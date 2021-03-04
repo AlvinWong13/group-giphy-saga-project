@@ -6,7 +6,7 @@ function SearchForm() {
   const searchGif = () => {
     console.log("button clicked")
     // dispatch({
-    //   type:
+    //   type: 'SET_GIFS',
     // })
   }
 
