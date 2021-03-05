@@ -20,18 +20,37 @@ function* watcherSaga() {
 function* searchGifs(action) {
   console.log("fetch gifts", action);
   try{
-    yield axios.get('/api/search', action.payload);
+    // yield axios.post('/api/search', action.payload);
+    // option a `/api/search/text?q=${action.payload}`
+    //post payload to DB, assign var to response from DB/Server
+    //then use yield put(.then equivalent) to run a 'get' function
+
+    const response = yield axios.get(`/api/search/text?q=${action.payload.search}`);
     yield put({
-      type: 'SET_GIFS'
+      type: 'SET_GIFS',
+      payload: response.data
     })
   }
   catch(err) {
-    console.log(err, "post failed")
+    console.log("post failed", err);
+  }
+}
+
+function* postGifs(action) {
+  try{
+    const newGiphy = action.payload;
+    yield axios.post('/api/favorite', newGiphy);
+    yield put({
+      type: 'SET_FAVORITES'
+    })
+  }
+  catch (err) {
+    console.log('Error in posting gifs', err);
   }
 }
 
 
-const GifsSearch = (state = [], action) => {
+const gifsSearch = (state = [], action) => {
   switch (action.type) {
     case 'SET_GIFS':
       return action.payload;
@@ -39,7 +58,7 @@ const GifsSearch = (state = [], action) => {
       return state;
   }
 };//nonsense commment
-const GifsFavs = (state = [], action) => {
+const gifsFavs = (state = [], action) => {
   switch (action.type) {
     case 'SET_FAVS':
       return action.payload;
@@ -52,8 +71,8 @@ const GifsFavs = (state = [], action) => {
 
 const storeInstance = createStore(
   combineReducers({
-    GifsSearch,
-    GifsFavs
+    gifsSearch,
+    gifsFavs
     // reducers here
   }),
 
@@ -64,4 +83,4 @@ sagaMiddleware.run(watcherSaga);
 ReactDOM.render(<Provider store={storeInstance}>
       <App />
     </Provider>,
-     document.getElementById('root'));
+document.getElementById('root'));

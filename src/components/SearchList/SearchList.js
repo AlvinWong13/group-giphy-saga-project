@@ -7,19 +7,26 @@ function SearchList() {
   /// useSelector() to assign local var to store
   //const newVariable = useSelector(store)
   //newVariable.map
-
+  const gifsSearch = useSelector(store => store.gifsSearch);
 
   return(
     <>
       <p>Search List</p>
       <ul>
-        <li>
-          <img src="https://giphy.com/static/img/zoomies.gif" alt="Smiley Face" />
-          <Button
-            variant="contained"
-            color="secondary">
-          Favorite</Button>
-        </li>
+        {gifsSearch.map(gif => {
+          console.log('gif object:', gif);
+          return (
+            <li key={gif.id}>
+              <img src={gif.images.original.url} />
+              <Button
+                variant="contained"
+                color="secondary">
+                Favorite
+              </Button>
+            </li>
+          );
+        })}
+      
       </ul>
     </>
   )
