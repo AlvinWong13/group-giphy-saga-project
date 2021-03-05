@@ -14,7 +14,12 @@ const sagaMiddleware = createSagaMiddleware();
 // GET ROUTE REDUCER FOR GIF Search
 function* watcherSaga() {
   console.log("yield takeEvery")
-  yield takeEvery('SEARCH_GIFS', searchGifs)
+  yield takeEvery('SEARCH_GIFS', searchGifs);
+  yield takeEvery('GET_FAVORITES', getFavoriteGifs);
+  yield takeEvery('POST_FAVORITES', favoriteGifs);
+  yield takeEvery('POST_CATEGORY', changeCategory);
+  yield takeEvery('POST_GIF', setCategory);
+  yield takeEvery('GET_CATEGORIES', categoryGifs);
 } 
 
 function* searchGifs(action) {
@@ -58,7 +63,9 @@ const gifsSearch = (state = [], action) => {
       return state;
   }
 };//nonsense commment
+
 const gifsFavs = (state = [], action) => {
+
   switch (action.type) {
     case 'SET_FAVS':
       return action.payload;
@@ -66,7 +73,84 @@ const gifsFavs = (state = [], action) => {
       return state;
   }
 };
-// Put that star function thing here to get gifs
+
+//categoryReducer
+const categoryReducer = ( state = [], action ) => {
+  switch (action.type) {
+    case 'SET_CATEGORY':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+// SAGAS
+// saga to get favoriteGifs
+function* getFavoriteGifs() {
+  try {
+    const response = yield axios.get('/api/favorite');
+    yield put({
+      type: 'SET_FAVS',
+      payload: response.data
+    })
+  }
+  catch (err) {
+    console.log('Error getting favorite Gifs', err)
+  }
+}
+
+// saga to post favoriteGifs
+function* favoriteGifs(action) {
+  try {
+    yield axios.post('/api/favorite', action.payload)
+    yield put({
+      type: 'GET_FAVORITE'
+    })
+  }
+  catch (err) {
+    console.log('Error posting gifs', err)
+  }
+}
+
+// saga to put gifs
+function* setCategory(action) {
+  try {
+    const gifId = action.payload.id;
+    const categoryId = action.payload.categoryId;
+    yield axios.put(`/api/favorite/${gifId}`, { categoryId });
+    yield put({ 
+      type: 'GET_FAVORITES' 
+    });
+  } catch (err) {
+    console.log('Error changing category', err);
+  }
+}
+
+// saga to get favorite Gifs from DB
+function* categoryGifs() {
+  try {
+    const response = yield axios.get('/api/category');
+    yield put({
+      type: 'SET_CATEGORY',
+      payload: response.data
+    })
+  }
+  catch (err) {
+    console.log('Error getting gifs from DB', err)
+  }
+}
+
+function* changeCategory(action) {
+  try {
+    const newCategory = action.payload;
+    yield axios.post('/api/category', { newCategoryName: newCategory });
+    yield put({ 
+      type: 'GET_CATEGORIES' 
+    });
+  } catch (err) {
+    console.log('error in changeCategory', err);
+  }
+} //end changeCategory
 
 
 const storeInstance = createStore(
@@ -74,13 +158,19 @@ const storeInstance = createStore(
     gifsSearch,
     gifsFavs
     // reducers here
+    GifsSearch,
+    favoriteReducer,
+    categoryReducer,
   }),
-
   applyMiddleware(sagaMiddleware, logger)
 );
 
 sagaMiddleware.run(watcherSaga);
-ReactDOM.render(<Provider store={storeInstance}>
-      <App />
-    </Provider>,
+
+
+ReactDOM.render(
+  <Provider store={storeInstance}>
+    <App />
+  </Provider>,
+
 document.getElementById('root'));

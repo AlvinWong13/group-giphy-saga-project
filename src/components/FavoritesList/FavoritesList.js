@@ -1,23 +1,33 @@
-function FavoritesList() {
-  return(
-    <>
-    <h2>Favorites</h2>
-      <ul>
-        <li>
-          <img src="https://giphy.com/static/img/zoomies.gif" alt="Smiley Face" />
-          <img src="https://media.giphy.com/media/HPvfnOuz1tOgg/giphy.gif" alt="Nick Cage" />
-          <select name="categories">
-            <option>Funny</option>
-            <option>Cohort</option>
-            <option>Cartoon</option>
-            <option>NSFW</option>
-            <option>Meme</option>
-          </select>
-        </li>
-
-      </ul>
-    </>
-  )
-}
-
-export default FavoritesList;
+  import { useDispatch, useSelector } from 'react-redux';
+  import { Grid } from '@material-ui/core';
+  import FavoritesItem from '../FavoriteItem/FavoriteItem';
+  import { useEffect } from 'react';
+  
+  function FavoritesList() {
+    const dispatch = useDispatch();
+    // useSelector to get reducer in index.js
+    const favoritesList = useSelector((state) => state.favoriteReducer);
+  
+    useEffect(() => {
+      dispatch({ 
+        type: 'GET_FAVORITES' 
+      });
+      dispatch({
+        type: 'GET_CATEGORY'
+      });
+    }, []);
+  
+    return (
+      <Grid container spacing={4} justify="center">
+        {favoritesList.map(favorite => {
+          return (
+            <Grid item key={favorite.id}>
+              <FavoritesItem favorite={favorite} />
+            </Grid>
+          );
+        })}
+      </Grid>
+    );
+  }
+  
+  export default FavoritesList;
