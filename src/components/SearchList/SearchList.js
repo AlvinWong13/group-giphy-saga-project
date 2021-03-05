@@ -4,10 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button'
 
 function SearchList() {
+  const dispatch = useDispatch();
   /// useSelector() to assign local var to store
   //const newVariable = useSelector(store)
   //newVariable.map
   const gifsSearch = useSelector(store => store.gifsSearch);
+
+  const handleFavorite = (url) => {
+    dispatch({
+      type: 'ADD_FAVORITE',
+      payload: { url }
+    });
+  }
 
   return(
     <>
@@ -20,7 +28,9 @@ function SearchList() {
               <img src={gif.images.original.url} />
               <Button
                 variant="contained"
-                color="secondary">
+                color="secondary"
+                onClick={() => handleFavorite(gif.images.original.url)}
+              >
                 Favorite
               </Button>
             </li>

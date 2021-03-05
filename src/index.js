@@ -14,7 +14,9 @@ const sagaMiddleware = createSagaMiddleware();
 // GET ROUTE REDUCER FOR GIF Search
 function* watcherSaga() {
   console.log("yield takeEvery")
-  yield takeEvery('SEARCH_GIFS', searchGifs)
+  yield takeEvery('SEARCH_GIFS', searchGifs);
+
+  yield takeEvery('ADD_FAVORITE', postGifs);
 } 
 
 function* searchGifs(action) {
@@ -41,7 +43,7 @@ function* postGifs(action) {
     const newGiphy = action.payload;
     yield axios.post('/api/favorite', newGiphy);
     yield put({
-      type: 'SET_FAVORITES'
+      type: 'SET_FAVS'
     })
   }
   catch (err) {
@@ -58,6 +60,7 @@ const gifsSearch = (state = [], action) => {
       return state;
   }
 };//nonsense commment
+
 const gifsFavs = (state = [], action) => {
   switch (action.type) {
     case 'SET_FAVS':
