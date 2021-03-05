@@ -65,7 +65,7 @@ function FavoritesItem({ favorite }) {
               onClose={() => setAnchorEl(null)}
             >
               <MenuItem onClick={() => changeCategory(null)}>
-                <em>none</em>
+                <em>No Category</em>
               </MenuItem>
               {categoryList.map((categoryItem) => {
                 return (
