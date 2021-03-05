@@ -23,7 +23,7 @@ function App(props) {
       <Router>
         <ThemeProvider theme={outerTheme}>
           <Header />
-          <Route path='/search' >
+          <Route path='/' exact >
             <SearchForm />
           </Route>
           <Route path='/favorites' >
